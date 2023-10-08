@@ -53,10 +53,13 @@ class TradingStationBlock(settings: Settings) : VisibleBlockWithEntity(settings)
             super.getFluidState(state)
         }
 
-    override fun onPlaced(world: World, pos: BlockPos, state: BlockState, entity: LivingEntity?, stack: ItemStack?) {
+    override fun onPlaced(world: World, pos: BlockPos, state: BlockState, entity: LivingEntity?, stack: ItemStack) {
         if (entity is PlayerEntity) {
             val be = world.getBlockEntity(pos) as? TradingStationBlockEntity ?: return
-            be.setOwner(entity)
+            // Crimecraft: Do not auto-set the owner
+            if (!stack.hasNbt()) {
+                be.setOwner(entity)
+            }
         }
     }
 
